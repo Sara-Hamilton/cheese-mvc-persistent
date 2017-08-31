@@ -83,18 +83,20 @@ public class CheeseController {
 
 
     // Bonus mission for Part 2
-    // Ability to display all cheeses in the same category
+    // Ability to display all cheeses in the same category at /cheese/category/{categoryId}
     @RequestMapping(value = "category/{categoryId}", method = RequestMethod.GET)
     public String category (Model model, @PathVariable int categoryId) {
 
+        Category category = categoryDao.findOne(categoryId);
+
         ArrayList<Cheese> cheeses = new ArrayList<>();
         for (Cheese cheese : cheeseDao.findAll())
-            if (cheese.getCategory().equals(categoryDao.findOne(categoryId))) {
+            if (cheese.getCategory().equals(category)) {
                 cheeses.add(cheese);
             }
 
         model.addAttribute("cheeses", cheeses);
-        model.addAttribute("title", "Cheeses in Same Category");
+        model.addAttribute("title", "Cheese in Category: " + category.getName());
 
         return "cheese/index";
     }
