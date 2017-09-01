@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 
-import static org.launchcode.models.Category.*;
-
 /**
  * Created by LaunchCode
  */
@@ -99,6 +97,40 @@ public class CheeseController {
         model.addAttribute("title", "Cheese in Category: " + category.getName());
 
         return "cheese/index";
+    }
+
+    //Bonus mission for Part 3
+    // Ability to edit a cheese
+    @RequestMapping(value = "edit/{cheeseId}", method = RequestMethod.GET)
+    public String displayEditForm(Model model, @PathVariable int cheeseId) {
+
+        Cheese cheese = cheeseDao.findOne(cheeseId);
+
+        model.addAttribute("cheese", cheese);
+        model.addAttribute("categories", categoryDao.findAll());
+        model.addAttribute("title", "Edit Cheese " + cheese.getName() + " ID " + cheeseId );
+
+        return "cheese/edit";
+    }
+
+    @RequestMapping(value = "edit", method = {RequestMethod.POST})
+    public String processEditForm(@ModelAttribute @Valid Cheese cheese, Errors errors,
+                                  int cheeseId, String name, String description, @RequestParam int category, Model model) {
+
+        if (errors.hasErrors()) {
+            model.addAttribute("cheese", cheese);
+            model.addAttribute("categories", categoryDao.findAll());
+            model.addAttribute("title", "Edit Cheese " + cheese.getName() + " ID " + cheeseId );
+            return "cheese/edit";
+        }
+
+        Category cat = categoryDao.findOne(category);
+        cheese.setCategory(cat);cheese.setName(name);
+        cheese.setDescription(description);
+
+        cheeseDao.save(cheese);
+
+        return "redirect:";
     }
 
 }
