@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by LaunchCode
@@ -78,28 +79,22 @@ public class CheeseController {
 
         return "redirect:";
     }
-
-
+    
     // Bonus mission for Part 2
     // Ability to display all cheeses in the same category at /cheese/category/{categoryId}
     @RequestMapping(value = "category/{categoryId}", method = RequestMethod.GET)
     public String category (Model model, @PathVariable int categoryId) {
 
-        Category category = categoryDao.findOne(categoryId);
-
-        ArrayList<Cheese> cheeses = new ArrayList<>();
-        for (Cheese cheese : cheeseDao.findAll())
-            if (cheese.getCategory().equals(category)) {
-                cheeses.add(cheese);
-            }
+        Category cat = categoryDao.findOne(categoryId);
+        List<Cheese> cheeses = cat.getCheeses();
 
         model.addAttribute("cheeses", cheeses);
-        model.addAttribute("title", "Cheese in Category: " + category.getName());
+        model.addAttribute("title", "Cheese in Category: " + cat.getName());
 
         return "cheese/index";
     }
 
-    //Bonus mission for Part 3
+    // Bonus mission for Part 3
     // Ability to edit a cheese
     @RequestMapping(value = "edit/{cheeseId}", method = RequestMethod.GET)
     public String displayEditForm(Model model, @PathVariable int cheeseId) {
@@ -114,21 +109,23 @@ public class CheeseController {
     }
 
     @RequestMapping(value = "edit", method = {RequestMethod.POST})
-    public String processEditForm(@ModelAttribute @Valid Cheese cheese, Errors errors,
-                                  int cheeseId, String name, String description, @RequestParam int category, Model model) {
+    public String processEditForm(Model model, @ModelAttribute @Valid Cheese cheese, Errors errors,
+                                  @RequestParam int cheeseId, String name, String description, @RequestParam int category) {
 
+        // cheeseID added to model and th:if statements added to edit.html hidden input to prevent cheeseId from being set to 0 if there are errors
         if (errors.hasErrors()) {
-            model.addAttribute("cheese", cheese);
+            model.addAttribute("cheeseID", cheeseId);
             model.addAttribute("categories", categoryDao.findAll());
             model.addAttribute("title", "Edit Cheese " + cheese.getName() + " ID " + cheeseId );
             return "cheese/edit";
         }
 
         Category cat = categoryDao.findOne(category);
-        cheese.setCategory(cat);cheese.setName(name);
-        cheese.setDescription(description);
+        cheeseDao.findOne(cheeseId).setCategory(cat);
+        cheeseDao.findOne(cheeseId).setName(name);
+        cheeseDao.findOne(cheeseId).setDescription(description);
 
-        cheeseDao.save(cheese);
+        cheeseDao.save(cheeseDao.findOne(cheeseId));
 
         return "redirect:";
     }
