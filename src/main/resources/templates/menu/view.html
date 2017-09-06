@@ -6,6 +6,8 @@
 
 <nav th:replace="fragments :: navigation"></nav>
 
+<p th:unless="${menu.cheeses} and ${menu.cheeses.size()}">No cheeses yet</p>
+
 <ul th:each="cheese : ${menu.cheeses}">
     <li th:text="${cheese.name}">Menu items</li>
 </ul>

@@ -6,6 +6,8 @@
 
 <nav th:replace="fragments :: navigation"></nav>
 
+<p th:unless="${categories} and ${categories.size()}">No categories yet</p>
+
 <ul th:each="category : ${categories}">
     <li th:text="${category.name}"></li>
 </ul>

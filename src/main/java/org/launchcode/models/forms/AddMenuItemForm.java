@@ -15,10 +15,12 @@ public class AddMenuItemForm {
 
     @Id
     @GeneratedValue
+    @NotNull
     private int menuId;
 
     @Id
     @GeneratedValue
+    @NotNull
     private int cheeseId;
 
     public AddMenuItemForm() {
