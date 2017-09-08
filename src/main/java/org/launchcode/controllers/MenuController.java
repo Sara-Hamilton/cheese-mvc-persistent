@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.List;
+
+import static org.launchcode.models.Menu.cheeseOnMenu;
 
 @Controller
 @RequestMapping(value = "menu")
@@ -82,21 +85,27 @@ public class MenuController {
     public String processAddItemForm(@ModelAttribute @Valid AddMenuItemForm form, Errors errors,
                                      @RequestParam int menuId, @RequestParam int cheeseId, Model model) {
 
-        // This is before the error check so that the menu name will still appear in the title if there are errors.
         Menu menu = menuDao.findOne(menuId);
-
-        if (errors.hasErrors()) {
-            model.addAttribute("form", form);
-            model.addAttribute("title", "Add Cheese to Menu: " + menu.getName());
-            return "menu/add-item";
-        }
-
         Cheese cheese = cheeseDao.findOne(cheeseId);
-        menu.addItem(cheese);
+        form = new AddMenuItemForm(menu, cheeseDao.findAll());
+        boolean cheeseOnMenu = cheeseOnMenu(cheese, menu);
 
-        menuDao.save(menu);
-
-        return "redirect:view/" + menuId;
+        if (errors.hasErrors() || cheeseOnMenu) {
+            if(cheeseOnMenu){
+                model.addAttribute("selected", cheese.getId());
+                model.addAttribute("form", form);
+                model.addAttribute("errorMessage", "That cheese is already on the menu.");
+                model.addAttribute("title", "Add Cheese to Menu: " + menu.getName());
+            } else if (errors.hasErrors()) {
+                model.addAttribute("menu", menu);
+                model.addAttribute("form", form);
+                model.addAttribute("title", "Add Cheese to Menu: " + menu.getName());
+            }
+            return "menu/add-item";
+        } else {
+            menu.addItem(cheese);
+            menuDao.save(menu);
+            return "redirect:view/" + menuId;
+            }
     }
-
 }

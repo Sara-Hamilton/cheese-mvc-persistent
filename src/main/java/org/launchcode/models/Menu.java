@@ -12,7 +12,7 @@ import java.util.List;
 public class Menu {
 
     @NotNull
-    @Size(min=3, max=15)
+    @Size(min = 3, max = 15)
     private String name;
 
     @Id
@@ -53,5 +53,15 @@ public class Menu {
         return cheeses;
     }
 
-
+    public static boolean cheeseOnMenu(Cheese cheese, Menu menu) {
+        List<Cheese> cheeseMenu = menu.getCheeses();
+        boolean onMenu = false;
+        for (Cheese item : cheeseMenu) {
+            if (item.equals(cheese)) {
+                onMenu = true;
+                break;
+            }
+        }
+        return onMenu;
+    }
 }
