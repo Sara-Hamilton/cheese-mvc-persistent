@@ -64,4 +64,7 @@ public class Cheese {
         this.category = category;
     }
 
+    public List<Menu> getMenus() {
+        return menus;
+    }
 }
