@@ -88,6 +88,7 @@ public class MenuController {
         Menu menu = menuDao.findOne(menuId);
         Cheese cheese = cheeseDao.findOne(cheeseId);
         form = new AddMenuItemForm(menu, cheeseDao.findAll());
+        // check if cheese is already on the menu to avoid duplication
         boolean cheeseOnMenu = cheeseOnMenu(cheese, menu);
 
         if (errors.hasErrors() || cheeseOnMenu) {
