@@ -15,7 +15,6 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.launchcode.models.Menu.cheeseOnMenu;
 
 @Controller
 @RequestMapping(value = "menu")
@@ -89,7 +88,7 @@ public class MenuController {
         Cheese cheese = cheeseDao.findOne(cheeseId);
         form = new AddMenuItemForm(menu, cheeseDao.findAll());
         // check if cheese is already on the menu to avoid duplication
-        boolean cheeseOnMenu = cheeseOnMenu(cheese, menu);
+        boolean cheeseOnMenu = menu.cheeseOnMenu(cheese, menu);
 
         if (errors.hasErrors() || cheeseOnMenu) {
             if(cheeseOnMenu){

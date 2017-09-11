@@ -55,7 +55,7 @@ public class Menu {
         return cheeses;
     }
 
-    public static boolean cheeseOnMenu(Cheese cheese, Menu menu) {
+    public boolean cheeseOnMenu(Cheese cheese, Menu menu) {
         List<Cheese> cheeseMenu = menu.getCheeses();
         boolean onMenu = false;
         for (Cheese item : cheeseMenu) {
