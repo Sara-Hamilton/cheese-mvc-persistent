@@ -23,7 +23,8 @@ public class Cheese {
     private String name;
 
     @NotNull
-    @Size(min=1, max=50)
+    //Using @Pattern and regexp to control for size instead of @Size
+    //@Size(min=1, max=50)
     //regex pattern prevents empty string but allows spaces within the string
     @Pattern(regexp="(.|\\s)*\\S(.|\\s)*", message="Description must not be empty")
     private String description;
