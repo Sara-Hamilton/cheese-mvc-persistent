@@ -7,6 +7,9 @@
 
 <nav th:replace="fragments :: navigation"></nav>
 
+<br></br>
+<p>Warning: removing a cheese here will also remove it from menus.</p>
+
 <form method="post">
     <div th:each="cheese : ${cheeses}" class="checkbox">
         <input type="checkbox" name="cheeseIds" th:value="${cheese.id}" th:id="${cheese.id}"/>

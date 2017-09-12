@@ -27,8 +27,8 @@
 
 </table>
 
-<a href="/cheese/add">Add</a> |
-<a href="/cheese/remove">Remove</a>
+<a th:if="${title} == 'My Cheeses'" href="/cheese/add">Add</a> <span th:if="${title} == 'My Cheeses'">|</span>
+<a th:if="${title} == 'My Cheeses'" href="/cheese/remove">Remove</a>
 
 </body>
 </html>

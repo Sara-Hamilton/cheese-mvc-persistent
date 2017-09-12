@@ -2,6 +2,7 @@ package org.launchcode.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -17,10 +18,14 @@ public class Cheese {
 
     @NotNull
     @Size(min=3, max=15)
+    //regex pattern prevents empty string but allows spaces within the string
+    @Pattern(regexp="(.|\\s)*\\S(.|\\s)*", message="Name must not be empty")
     private String name;
 
     @NotNull
-    @Size(min=1, message = "Description must not be empty")
+    @Size(min=1, max=50)
+    //regex pattern prevents empty string but allows spaces within the string
+    @Pattern(regexp="(.|\\s)*\\S(.|\\s)*", message="Description must not be empty")
     private String description;
 
     @ManyToOne
