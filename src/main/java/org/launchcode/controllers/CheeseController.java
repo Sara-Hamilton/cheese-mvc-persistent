@@ -140,8 +140,6 @@ public class CheeseController {
         cheeseDao.findOne(cheeseId).setName(name);
         cheeseDao.findOne(cheeseId).setDescription(description);
 
-        cheeseDao.save(cheeseDao.findOne(cheeseId));
-
         return "redirect:";
     }
 
